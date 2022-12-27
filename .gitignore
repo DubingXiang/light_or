@@ -1,0 +1,70 @@
+# Xmake cache
+.xmake/
+build/
+examples/data/*/output
+vsxmake*/
+
+Makefile.local
+Makefile.local~
+
+# dependencies/
+# include/
+# share/
+
+# ligh_or*.tar.gz
+# ligh_or*.zip
+*.snk
+*.a
+*.o
+*.so
+*.py[co]
+*.lib
+*.exp
+*.pdb
+*.pbtxt
+*.ass
+*.swp
+
+build*.log
+test.log
+publish*.log
+
+objs/
+cmake/protobuf-*.cmake
+classes/
+packages/
+lib/
+bin/
+install/
+
+# Release stuff
+private-key.gpg
+settings.xml
+export
+
+
+.vagrant/
+
+# IDE stuff
+CMakeLists.txt.user
+*.userprefs
+.idea/*
+.idea/
+cache/
+.cache/
+**/.vscode/*
+# MacOS Cache
+.DS_Store 
+**/.vs/*
+*.vcxproj*
+
+
+# .Net code gen
+
+# cmake code gen (assumes -Bbuild)
+.cmake/
+CMakeCache.txt
+CMakeFiles
+DartConfiguration.tcl
+*build*/*
+build/
