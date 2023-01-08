@@ -16,6 +16,7 @@ add_requires("cli11")
 add_requires("nlohmann_json") 
 add_requires("openmp")
 
-includes("src","examples")
+-- includes("src","examples")
+includes("examples")
 
 

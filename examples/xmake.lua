@@ -32,15 +32,17 @@ target(test[1])
     print("########## build target: ", test[2])
     set_kind("binary")
     add_files(test[2])
+    add_links("light_or")    
     add_includedirs("../include")
     add_packages("spdlog")
     add_packages("cli11")
-    add_packages("nlohmann_json")
-    add_deps("light_or")
+    add_packages("nlohmann_json")    
     if is_mode("release") then 
+        add_linkdirs("../lib/release")
         set_targetdir("../bin/release")
     end 
     if is_mode("debug") then 
+        add_linkdirs("../lib/debug")
         set_targetdir("../bin/debug")
     end 
 
