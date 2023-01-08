@@ -11,8 +11,8 @@ Makefile.local~
 # include/
 # share/
 
-!/lib/debug/*
-!/lib/release/*
+!lib/debug/*
+!lib/release/*
 *.snk
 *.a
 *.o
