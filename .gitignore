@@ -11,8 +11,8 @@ Makefile.local~
 # include/
 # share/
 
-# ligh_or*.tar.gz
-# ligh_or*.zip
+!/lib/debug/*
+!/lib/release/*
 *.snk
 *.a
 *.o
