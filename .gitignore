@@ -24,6 +24,8 @@ Makefile.local~
 *.pbtxt
 *.ass
 *.swp
+# do not ignore lib
+!lib/release/*
 
 build*.log
 test.log
