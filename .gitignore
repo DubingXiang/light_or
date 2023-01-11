@@ -1,7 +1,8 @@
 # Xmake cache
 .xmake/
 build/
-examples/data/*/output
+examples/data/*/input/
+examples/data/*/output/
 vsxmake*/
 
 Makefile.local
@@ -11,8 +12,6 @@ Makefile.local~
 # include/
 # share/
 
-!lib/debug/*
-!lib/release/*
 *.snk
 *.a
 *.o
@@ -24,8 +23,6 @@ Makefile.local~
 *.pbtxt
 *.ass
 *.swp
-# do not ignore lib
-!lib/release/*
 
 build*.log
 test.log
@@ -70,3 +67,7 @@ CMakeFiles
 DartConfiguration.tcl
 *build*/*
 build/
+
+# do not ignore lib
+!lib/release/*
+!examples/data/*/benchmark/

@@ -1,7 +1,7 @@
 # light_or
 
 #### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
+light_or is a tool to developing operational research algorithms to solve combinatorial problems.
 
 #### Software Architecture
 Software architecture description

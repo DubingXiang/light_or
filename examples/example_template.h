@@ -54,13 +54,9 @@ class CmdArgsParser {
   CLI::App _app;
   std::string _description;
   std::string _footer;
-  std::string _algorithm_param_file =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/config/algorithm_parameters.json";
-  std::string _instance_file =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/data/bpp/input/Irnich_BPP/"
-      "csAA125_1.txt";
-  std::string _output_dir =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/data/bpp/output/";
+  std::string _algorithm_param_file;
+  std::string _instance_file;
+  std::string _output_dir;
 };
 CmdArgsParser::CmdArgsParser(const std::string& description, const std::string& footer)
     : _description(description), _footer(footer) {
@@ -88,7 +84,7 @@ int ExampleHelper::Main(int argc,
                         const std::string& description,
                         const std::string& footer) {
   CmdArgsParser cmd_parser(description, footer);
-  // CLI11_PARSE(cmd_parser.mutable_app(), argc, argv);
+  CLI11_PARSE(cmd_parser.mutable_app(), argc, argv);
   SPDLOG_INFO("---------- input args");
   SPDLOG_INFO(cmd_parser.ArgsStr());
 
