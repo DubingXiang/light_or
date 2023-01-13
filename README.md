@@ -12,6 +12,8 @@ Software architecture description
 2.  xxxx
 3.  xxxx
 
+#### Benchmarks
+[quadratic assignment problem](https://github.com/DubingXiang/light_or/blob/master/examples/data/qap/benchmark/readme.md)
 #### Instructions
 
 1.  xxxx
