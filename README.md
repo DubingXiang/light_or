@@ -9,7 +9,7 @@
 *   [Contacts](#contacts)
 *   [License](#license)
 ## Introduction ([中文](/README_zh.md))
-light_or is a tool to help develop operational optimization algorithms to solve combinatorial optimization problems.  
+light_or is a tool that help you develop Operational Research algorithms to solve combinatorial optimization problems.  
 
 ## Components
 
