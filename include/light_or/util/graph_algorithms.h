@@ -24,12 +24,13 @@ class LinearSumAssignment {
   using NodeIndex                               = int64_t;
   using CostValue                               = int64_t;
   using Graph                                   = std::vector<std::vector<CostValue>>;
-  inline static const NodeIndex kNodeIndexLimit = 1e6;
-  inline static const NodeIndex kNoNode         = -1;
-  inline static const CostValue kCostValueLimit = std::numeric_limits<CostValue>::max() / 2;
+  inline static const NodeIndex kNodeIndexLimit = 1e6;  // 节点数量限制
+  inline static const NodeIndex kNoNode         = -1;   // id 为-1认为非法节点
+  inline static const CostValue kCostValueLimit =
+      std::numeric_limits<CostValue>::max() / 2;  // 边权重的最大值
 
  public:
-  LinearSumAssignment(const Graph& graph);
+  LinearSumAssignment(const Graph& graph, bool is_maximize = true);
   ~LinearSumAssignment();
 
   void Matching();
