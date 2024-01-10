@@ -30,18 +30,19 @@ template <class Functor>
 class FunctionConstraint : public ConstraintDef {
  public:
   FunctionConstraint() = default;
-  FunctionConstraint(Functor&& func) : _callback(std::forward<Functor>(func)) {}
+  FunctionConstraint(Functor&& func) : _callback(std::move(func)) {}
   void SetFunction(Functor&& func) {
-    _callback = std::forward<Functor>(func);
+    _callback = std::move(func);
   }
   const char* class_name() const override {
     return "FunctionConstraint";
   }
+  std::unique_ptr<ConstraintDef> Clone() const override {
+    return std::make_unique<FunctionConstraint>(std::move(Functor(_callback)));
+  }
+
   bool Check(const SolutionDef* solution, KArgsContainer* kargs = nullptr) const override {
     return _callback(solution, kargs);
-  }
-  std::unique_ptr<ConstraintDef> Clone() const override {
-    return std::make_unique<FunctionConstraint>(Functor(_callback));
   }
 
  private:

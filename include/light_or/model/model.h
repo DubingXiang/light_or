@@ -28,17 +28,18 @@ class Model : public BaseObject {
     return "Model";
   }
 
-  bool AddConstraint(std::unique_ptr<ConstraintDef> ct, std::string name, int placeholder = 0);
-  template <typename Functor, std::enable_if_t<!std::is_base_of_v<ConstraintDef, Functor>, int> = 0>
-  void AddConstraint(Functor&& func, std::string name) {
-    auto ct = MakeFunctionConstraint(std::forward<Functor>(func));
-    this->AddConstraint(std::move(ct), name, 0);
-  }
-  bool AddObjective(std::unique_ptr<ObjectiveDef> obj, std::string name, int placeholder = 0);
+  bool AddConstraint(std::unique_ptr<ConstraintDef> ct, std::string name);
+
   template <typename Functor>
-  void AddObjective(Functor&& func, std::string name) {
+  void AddConstraintCallable(Functor&& func, std::string name) {
+    auto ct = MakeFunctionConstraint(std::forward<Functor>(func));
+    this->AddConstraint(std::move(ct), name);
+  }
+  bool AddObjective(std::unique_ptr<ObjectiveDef> obj, std::string name);
+  template <typename Functor>
+  void AddObjectiveCallable(Functor&& func, std::string name) {
     auto obj = MakeFunctionObjective(std::forward<Functor>(func));
-    this->AddObjective(std::move(obj), name, 0);
+    this->AddObjective(std::move(obj), name);
   }
   const ConstraintDef* ConstraintOrNull(const std::string& name) const;
   const ObjectiveDef* ObjectiveOrNull(const std::string& name) const;
@@ -49,11 +50,11 @@ class Model : public BaseObject {
 
   void Minimize(std::unique_ptr<ObjectiveDef> obj, std::string name) {
     obj->set_direction(ObjectiveDef::Minimize);
-    AddObjective(std::move(obj), std::move(name), 0);
+    AddObjective(std::move(obj), std::move(name));
   }
   void Maximize(std::unique_ptr<ObjectiveDef> obj, std::string name) {
     obj->set_direction(ObjectiveDef::Maximize);
-    AddObjective(std::move(obj), std::move(name), 0);
+    AddObjective(std::move(obj), std::move(name));
   }
 
   std::unique_ptr<Model> Clone() const;

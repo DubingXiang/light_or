@@ -58,8 +58,8 @@ class Agent {
 
 class SchedulingProblem : public light_or::Model {
  public:
-  SchedulingProblem(const std::vector<std::unique_ptr<Agent>>& agents,
-                    const std::vector<std::unique_ptr<Task>>& tasks);
+  SchedulingProblem(std::vector<std::unique_ptr<Agent>> agents,
+                    std::vector<std::unique_ptr<Task>> tasks);
   const std::vector<std::unique_ptr<Agent>>& Agents() const {
     return _agents;
   }
@@ -85,7 +85,7 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   const std::unordered_map<int, int>& ProcessBeginTimes(int agent) const;
   const std::unordered_map<int, int>& AssignedProcessDurations(int agent) const;
 
-  void Assign(int agent, int task);
+  // void Assign(int agent, int task);
 
  private:
   std::unordered_map<int, std::unordered_map<int, int>> _agent_to_task_process_begin_time;
