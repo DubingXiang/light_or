@@ -24,6 +24,11 @@ class AlgorithmParameters;
 namespace light_or::scheduling {
 class Task {
  public:
+  Task(int id, int generate_time, int type, int max_response_time)
+      : _id(id)
+      , _generate_time(generate_time)
+      , _type(type)
+      , _max_response_time(max_response_time) {}
   int Id() const {
     return _id;
   }
@@ -45,6 +50,8 @@ class Task {
 };
 class Agent {
  public:
+  Agent(int id, const std::vector<int>& process_duration)
+      : _id(id), _process_task_duration(process_duration) {}
   int Id() const {
     return _id;
   }
@@ -53,7 +60,7 @@ class Agent {
 
  private:
   int _id;
-  std::vector<std::vector<int>> _processTaskDuration;
+  std::vector<int> _process_task_duration;
 };
 
 class SchedulingProblem : public light_or::Model {
@@ -100,10 +107,16 @@ class SchedulingSolver
   void InitialSolution(bool use_random = false) override;
 };
 
-class SchedulingIOParser : public light_or::util::IOParser<SchedulingProblem, SchedulingSolution> {
+class SchedulingIOParser {
  public:
-  void Parse(const std::string& input_file) override;
-  std::string Parse(const SolutionType& solution) override;
+  void Parse(const std::string& data_dir);
+  std::string Parse(const SchedulingSolution& solution);
+  SchedulingProblem* problem() const {
+    return _problem.get();
+  }
+
+ private:
+  std::unique_ptr<SchedulingProblem> _problem = nullptr;
 };
 
 }  // namespace light_or::scheduling
