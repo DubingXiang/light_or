@@ -13,31 +13,36 @@
 #include <light_or/solver/solution_pool.h>
 
 namespace light_or {
+class Solver;
 class OpDef {
  public:
-  OpDef();
+  OpDef(Solver* const solver);
   virtual ~OpDef();
   virtual void BeforeSearch();
   virtual std::vector<std::unique_ptr<SolutionDef>> Searching(
       const SolutionPool& solution_pool) = 0;
   virtual void AfterSearch();
 
-  virtual const char* class_name() = 0;
+  virtual const char* class_name() const = 0;
   const std::string& name() const;
   void set_name(const std::string& name);
+  Solver* const solver() const {
+    return _solver;
+  }
 
  protected:
+  Solver* const _solver;
   std::string _name;
 };
 
 template <class Functor>
 class FunctionOp : public OpDef {
  public:
-  FunctionOp(Functor&& func) : _callback(std::move(func)) {}
+  FunctionOp(Solver* const solver, Functor&& func) : OpDef(solver), _callback(std::move(func)) {}
   std::vector<std::unique_ptr<SolutionDef>> Searching(const SolutionPool& solution_pool) override {
     return _callback(solution_pool);
   }
-  const char* class_name() override {
+  const char* class_name() const override {
     return "FunctionOp";
   }
 
@@ -50,8 +55,10 @@ class FunctionOp : public OpDef {
 };
 
 template <typename Functor>
-std::unique_ptr<FunctionOp<Functor>> MakeFunctionOp(Functor&& func, std::string name) {
-  std::unique_ptr<FunctionOp<Functor>> func_op(new FunctionOp<Functor>(std::move(func)));
+std::unique_ptr<FunctionOp<Functor>> MakeFunctionOp(Solver* const solver,
+                                                    Functor&& func,
+                                                    std::string name) {
+  std::unique_ptr<FunctionOp<Functor>> func_op(new FunctionOp<Functor>(solver, std::move(func)));
   func_op->set_name(name);
   return func_op;
 }
