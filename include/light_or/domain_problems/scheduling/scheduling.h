@@ -56,7 +56,7 @@ class Agent {
     return _id;
   }
 
-  int ProcessDuration(int taskType);
+  int ProcessDuration(int taskType) const;
 
  private:
   int _id;
@@ -74,6 +74,8 @@ class SchedulingProblem : public light_or::Model {
     return _tasks;
   }
 
+ public:
+  inline static const int kMinTimeStep = 1;  // 决策的时间离散单元，单位为分钟
  private:
   std::vector<std::unique_ptr<Agent>> _agents;
   std::vector<std::unique_ptr<Task>> _tasks;
@@ -92,7 +94,7 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   const std::unordered_map<int, int>& ProcessBeginTimes(int agent) const;
   const std::unordered_map<int, int>& AssignedProcessDurations(int agent) const;
 
-  // void Assign(int agent, int task);
+  void Assign(int agent, int task, int process_begin_time, int process_duration);
 
  private:
   std::unordered_map<int, std::unordered_map<int, int>> _agent_to_task_process_begin_time;
