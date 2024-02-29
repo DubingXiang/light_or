@@ -112,8 +112,10 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   }
   const SchedulingProblem* problem() const;
   // agent 开始处理 task 的时刻
+  // 若查找失败，则返回 std::nullopt
   std::optional<int> AssignedProcessBeginTime(int agent, int task) const;
   // agent 在 task 上分配的处理时长
+  // 若查找失败，则返回 std::nullopt
   std::optional<int> AssignedProcessDuration(int agent, int task) const;
   // agent 所有分配的 task 的开始处理时刻
   const std::unordered_map<int, int>& ProcessBeginTimes(int agent) const;

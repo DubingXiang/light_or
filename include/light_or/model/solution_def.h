@@ -43,7 +43,7 @@ class SolutionDef : public BaseObject {
   }
   const SolutionInfo& info() const;
   SolutionInfo* mutable_info();
-
+  // 计算 model 中所有的目标函数
   void ComputeObjective();
   bool CheckFeasibility(KArgsContainer* kargs = nullptr) const;
   const std::vector<ObjectiveData>& objective_data_list() const;
