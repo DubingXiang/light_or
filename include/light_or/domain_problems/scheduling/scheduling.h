@@ -91,12 +91,22 @@ class SchedulingProblem : public light_or::Model {
   const Task& GetTask(int index) const {
     return *(_tasks.at(index));
   }
+  const Agent* GetAgentById(int id) const {
+    auto itor = _agentIdToIndices.find(id);
+    return itor == _agentIdToIndices.end() ? nullptr : _agents.at(itor->second).get();
+  }
+  const Task* GetTaskById(int id) const {
+    auto itor = _taskIdToIndices.find(id);
+    return itor == _taskIdToIndices.end() ? nullptr : _tasks.at(itor->second).get();
+  }
 
  public:
   inline static const int kMinTimeStep = 1;  // 决策的时间离散单元，单位为分钟
  private:
   std::vector<std::unique_ptr<Agent>> _agents;
   std::vector<std::unique_ptr<Task>> _tasks;
+  std::unordered_map<int, int> _agentIdToIndices;
+  std::unordered_map<int, int> _taskIdToIndices;
 };
 // 继承了 light_or::IntVectorSolution 类
 // 编码为矩阵类的编码，即 light_or::IntVectorSolution 的 encodings 为一个二维数组（矩阵）
