@@ -9,7 +9,7 @@
     "is_use_multi_objective_optimization": false,
     "is_use_deterministic_optimization": true,
     "iterations_limit": 50000000,
-    "log_level": "critical",
+    "log_level": "debug",
     "log_objective_results": true,
     "op_select_type": "RouletteWheelOpSelector",
     "replacement_sampling_activated_op": false,

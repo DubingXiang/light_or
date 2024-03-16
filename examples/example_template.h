@@ -31,6 +31,10 @@ class ExampleHelper {
   std::string current_best_objective_stats_file_name = "CurrentBestObjectiveStats";
 };
 
+// 读取数据分为两类：
+// 1.简单：所有数据都在一个文件，采用输入 instance file 的形式
+// 2.复杂：所有数据在同一个文件夹下的多个文件，采用输入 input dir 的形式
+// 若二者都有值，则选择使用 input_dir
 class CmdArgsParser {
  public:
   CmdArgsParser(const std::string& description, const std::string& footer);
@@ -48,6 +52,9 @@ class CmdArgsParser {
   const std::string& output_dir() const {
     return _output_dir;
   }
+  const std::string& input_dir() const {
+    return _input_dir;
+  }
 
  private:
   void Init();
@@ -55,12 +62,14 @@ class CmdArgsParser {
   std::string _description;
   std::string _footer;
   std::string _algorithm_param_file =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/config/algorithm_parameters.json";
+      "/home/xiangdubing/code/light_or/examples/config/algorithm_parameters.json";
   std::string _instance_file =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/data/bpp/input/Irnich_BPP/"
+      "/home/xiangdubing/code/light_or/examples/data/bpp/input/Irnich_BPP/"
       "csAA125_1.txt";
+  std::string _input_dir =
+      "/home/xiangdubing/code/light_or/examples/data/tianchi_scheduling/input/";
   std::string _output_dir =
-      "/home/xiangdubing/code/light_or_dev/light_or/examples/data/bpp/output/";
+      "/home/xiangdubing/code/light_or/examples/data/tianchi_scheduling/output/";
 };
 CmdArgsParser::CmdArgsParser(const std::string& description, const std::string& footer)
     : _description(description), _footer(footer) {
@@ -72,13 +81,16 @@ void CmdArgsParser::Init() {
   _app.add_option("-p,--parameters", _algorithm_param_file, "algorithm parameters config file")
       ->required();
   _app.add_option("-i,--instance", _instance_file, "instance file")->required();
+  // 输入数据的目录
+  _app.add_option("-r,--input_dir", _input_dir, "input directory")->required(false);
   _app.add_option("-o,--output_dir", _output_dir, "output directory")->required(false);
 }
 std::string CmdArgsParser::ArgsStr() const {
   return spdlog::fmt_lib::format(
-      "\t algorithm parameters config file:{} instance_file:{} output_dir:{}",
+      "\t algorithm parameters config file:{} instance_file:{} input_dir:{} output_dir:{}",
       _algorithm_param_file,
       _instance_file,
+      _input_dir,
       _output_dir);
 }
 
@@ -97,8 +109,13 @@ int ExampleHelper::Main(int argc,
   light_or::AlgorithmParameters parameters = algo_param_json.get<light_or::AlgorithmParameters>();
 
   spdlog::set_level(light_or::util::LogLevel(parameters.log_level));
+
   DomainIOParser io_parser;
-  io_parser.Parse(cmd_parser.instance_file());
+  if (cmd_parser.input_dir().empty()) {
+    io_parser.Parse(cmd_parser.instance_file());
+  } else {
+    io_parser.Parse(cmd_parser.input_dir());
+  }
   DomainSolver solver(parameters.is_use_deterministic_optimization);
   solver.Solve(io_parser.problem(), parameters);
 

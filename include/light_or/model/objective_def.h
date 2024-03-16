@@ -18,6 +18,7 @@ namespace light_or {
 class SolutionDef;
 class ObjectiveDef {
  public:
+//  默认为最小化，最大化则通过将目标函数值乘以负1的形式实现
   enum Direction { Minimize = 1, Maximize = -1 };
 
  public:
@@ -49,6 +50,7 @@ struct ObjectiveData {
   ObjectiveDef::Direction direction = ObjectiveDef::Direction::Minimize;
 };
 class LinearSumObjective;
+// 多目标。存储多个目标，可转化为线性加权的单目标
 class MultiObjective {
  public:
   MultiObjective();
