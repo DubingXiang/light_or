@@ -1,3 +1,4 @@
+#include <iostream>
 #include <filesystem>
 #include <CLI/CLI.hpp>
 #include <light_or/util/io.h>
@@ -58,24 +59,47 @@ class CmdArgsParser {
 
  private:
   void Init();
+  std::string GetRootPath(const std::string& key_str = "light_or") const;
   CLI::App _app;
   std::string _description;
   std::string _footer;
-  std::string _algorithm_param_file =
-      "/home/xiangdubing/code/light_or/examples/config/algorithm_parameters.json";
-  std::string _instance_file =
-      "/home/xiangdubing/code/light_or/examples/data/bpp/input/Irnich_BPP/"
-      "csAA125_1.txt";
-  std::string _input_dir =
-      "/home/xiangdubing/code/light_or/examples/data/tianchi_scheduling/input/";
-  std::string _output_dir =
-      "/home/xiangdubing/code/light_or/examples/data/tianchi_scheduling/output/";
+  std::string _algorithm_param_file = "/light_or/examples/config/algorithm_parameters.json";
+  std::string _instance_file        = "/light_or/examples/data/bpp/input/Irnich_BPP/csAA125_1.txt";
+  std::string _input_dir            = "/light_or/examples/data/tianchi_scheduling/input/";
+  std::string _output_dir           = "/light_or/examples/data/tianchi_scheduling/output/";
 };
 CmdArgsParser::CmdArgsParser(const std::string& description, const std::string& footer)
     : _description(description), _footer(footer) {
   Init();
 }
+
+std::string CmdArgsParser::GetRootPath(const std::string& key_str) const {
+  const std::filesystem::path current_path = std::filesystem::current_path();
+  std::vector<std::string> root_path_vec;
+  std::string root_path("");
+  for (const auto& sub_path : current_path) {
+    std::string sub_path_str = sub_path.string();
+    if (sub_path_str == key_str) {
+      break;
+    } else {
+      if (sub_path_str != "/") {
+        root_path += "/";
+        root_path += sub_path;
+      }
+    }
+  }
+  return root_path;
+}
+
 void CmdArgsParser::Init() {
+
+  // 获取根目录，修改配置文件路径
+  const std::string& root_path = GetRootPath("light_or");
+  _algorithm_param_file        = root_path + _algorithm_param_file;
+  _instance_file               = root_path + _instance_file;
+  _input_dir                   = root_path + _input_dir;
+  _output_dir                  = root_path + _output_dir;
+
   _app.description(_description);
   _app.footer(_footer);
   _app.add_option("-p,--parameters", _algorithm_param_file, "algorithm parameters config file")
