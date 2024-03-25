@@ -67,6 +67,7 @@ class SmartPointContainer {
     return names;
   }
   int Size() const { return _elements.size(); }
+  bool Empty() const { return _elements.empty(); }
  private:
   typename std::map<std::string, ElementPtr>::const_iterator ElementItor(
       const std::string& name) const {

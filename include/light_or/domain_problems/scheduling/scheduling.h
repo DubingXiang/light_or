@@ -133,6 +133,9 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   const std::unordered_map<int, int>& AssignedProcessDurations(int agent) const;
   // 分配 task 给 agent，且开始处理时刻为 process_begin_time，处理时长为 process_duration
   void Assign(int agent, int task, int process_begin_time, int process_duration);
+  // 输出格式化的字符串
+  // 默认为agent维度为主
+  std::string FormatStr() const;
 
  private:
   std::unordered_map<int, std::unordered_map<int, int>> _agent_to_task_process_begin_time;
