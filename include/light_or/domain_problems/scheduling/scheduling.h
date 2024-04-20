@@ -133,6 +133,10 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   const std::unordered_map<int, int>& AssignedProcessDurations(int agent) const;
   // 分配 task 给 agent，且开始处理时刻为 process_begin_time，处理时长为 process_duration
   void Assign(int agent, int task, int process_begin_time, int process_duration);
+  // 取消分配
+  // 搜索 task 已经分配的 agents（存在一个task转派的情况，所以是vector） ，取消分配
+  // 若 task 未分配给任何 agent，则返回 std::nullopt
+  std::vector<int> Remove(int task);
   // 输出格式化的字符串
   // 默认为agent维度为主
   std::string FormatStr() const;
