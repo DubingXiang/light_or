@@ -16,7 +16,7 @@ namespace light_or {
 class Solver;
 class OpDef {
  public:
-  OpDef(Solver* const solver);
+  OpDef(Solver* const solver, std::string_view name = "");
   virtual ~OpDef();
   virtual void BeforeSearch();
   virtual std::vector<std::unique_ptr<SolutionDef>> Searching(

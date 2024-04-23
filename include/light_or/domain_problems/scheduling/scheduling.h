@@ -137,6 +137,15 @@ class SchedulingSolution : public light_or::IntVectorSolution {
   // 搜索 task 已经分配的 agents（存在一个task转派的情况，所以是vector） ，取消分配
   // 若 task 未分配给任何 agent，则返回 std::nullopt
   std::vector<int> Remove(int task);
+  // 自动寻找 task 的位置（按照时间顺序），并按顺序更新后续的 task 的执行时间等信息
+  void GreedyInsert(int agent_id, int task_id);
+  struct TaskAssignedData {
+    int task_id;
+    int process_begin_time;
+    int process_duration;
+  };
+  // agent分配的 tasks。按处理时刻排序
+  std::vector<TaskAssignedData> GetAgentAssignedTaskData(int agent_id) const;
   // 输出格式化的字符串
   // 默认为agent维度为主
   std::string FormatStr() const;
