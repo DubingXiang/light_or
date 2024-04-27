@@ -165,10 +165,10 @@ int ExampleHelper::Main(int argc,
       "current_best_objective_stats_file:{}",
       global_best_objective_stats_file,
       current_best_objective_stats_file);
-  solver.solver()->ExportObjectiveStats(light_or::Solver::ObjectiveStatsType::global_best,
-                                        global_best_objective_stats_file);
-  solver.solver()->ExportObjectiveStats(light_or::Solver::ObjectiveStatsType::current_best,
-                                        current_best_objective_stats_file);
+  // solver.solver()->ExportObjectiveStats(light_or::Solver::ObjectiveStatsType::global_best,
+  //                                       global_best_objective_stats_file);
+  // solver.solver()->ExportObjectiveStats(light_or::Solver::ObjectiveStatsType::current_best,
+  //                                       current_best_objective_stats_file);
   return 0;
 }
 

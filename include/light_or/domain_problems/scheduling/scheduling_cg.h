@@ -14,19 +14,20 @@
 
 #include <light_or/domain_problems/scheduling/scheduling.h>
 
+
 namespace light_or::scheduling {
 class SchedulingCGSolver {
  public:
-  SchedulingCGSolver() = default;
+  SchedulingCGSolver(bool deterministic): _deterministic(deterministic) {}
   ~SchedulingCGSolver() = default;
 
-  std::unique_ptr<SchedulingSolution> Solve(SchedulingProblem* problem, const AlgorithmParameters& parameters);
+  void Solve(SchedulingProblem* problem, const AlgorithmParameters& parameters);
   
   // bool Solve(SchedulingProblem* problem, const AlgorithmParameters& parameters);
-  // const SchedulingSolution* BestSolution() const { return _bestSolution; }
+  const SchedulingSolution* BestSolution() const { return nullptr; }
   
-  // enum ObjectiveStatsType { global_best, current_best };
-  // std::string ExportObjectiveStats(ObjectiveStatsType type) const;
+  enum ObjectiveStatsType { global_best, current_best };
+  std::string ExportObjectiveStats(ObjectiveStatsType type) const { return "1";}
   // void ExportObjectiveStats(ObjectiveStatsType type, const std::string& file) const;
 
  private:
@@ -34,6 +35,7 @@ class SchedulingCGSolver {
   // std::unique_ptr<light_or::Solver> _solver    = nullptr;
   // std::unique_ptr<SchedulingSolution> _init_solution = nullptr;
   const SchedulingSolution* _best_solution           = nullptr;
+  bool _deterministic = false;
   // util::RandomGenerator _random;
 };
 }  // namespace light_or::scheduling
