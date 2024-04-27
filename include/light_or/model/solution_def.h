@@ -55,8 +55,7 @@ class SolutionDef : public BaseObject {
    * @param default_weight as wight of objective whose name is not in weight_map
    * @return double
    */
-  double LinearSumObjectiveValue(const std::map<std::string, double>& weight_map = {},
-                                 double default_weight                           = 1.0) const;
+  double LinearSumObjectiveValue() const;
 
  protected:
   const std::atomic<Id> _id;

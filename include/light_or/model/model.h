@@ -30,8 +30,9 @@ class Model : public BaseObject {
   }
   // 添加约束，并赋予一个唯一的名称
   bool AddConstraint(std::unique_ptr<ConstraintDef> ct, std::string name);
-  // 添加约束：无需用户自定义约束实现类，而是通过 lambda 表达式、仿函数、function等callable对象的方式。
-  // 但是需要保证括号运算符重载：返回值为： bool，输入为：const SolutionDef* solution, KArgsContainer* kargs
+  // 添加约束：无需用户自定义约束实现类，而是通过 lambda
+  // 表达式、仿函数、function等callable对象的方式。 但是需要保证括号运算符重载：返回值为：
+  // bool，输入为：const SolutionDef* solution, KArgsContainer* kargs
   // 如：model->AddConstraintCallable(
   //              [](const SolutionDef* solution, KArgsContainer* kargs){/*return isFeasible;*/}
   //              , "UDFCtName");
@@ -41,16 +42,16 @@ class Model : public BaseObject {
     this->AddConstraint(std::move(ct), name);
   }
   // 添加目标函数，并赋予一个唯一的名称
-  bool AddObjective(std::unique_ptr<ObjectiveDef> obj, std::string name);
-  // 添加目标：无需用户自定义目标实现类，而是通过 lambda 表达式、仿函数、function等callable对象的方式。
-  // 但是需要保证括号运算符重载：返回值为： double ，输入为：const SolutionDef* solution
-  // 如：model->AddObjectiveCallable(
+  bool AddObjective(std::unique_ptr<ObjectiveDef> obj, std::string name, double weight = 1.0);
+  // 添加目标：无需用户自定义目标实现类，而是通过 lambda
+  // 表达式、仿函数、function等callable对象的方式。 但是需要保证括号运算符重载：返回值为： double
+  // ，输入为：const SolutionDef* solution 如：model->AddObjectiveCallable(
   //              [](const SolutionDef* solution){/*return objValue;*/}
   //              , "UDFObjName");
   template <typename Functor>
-  void AddObjectiveCallable(Functor&& func, std::string name) {
+  void AddObjectiveCallable(Functor&& func, std::string name, double weight = 1.0) {
     auto obj = MakeFunctionObjective(std::forward<Functor>(func));
-    this->AddObjective(std::move(obj), name);
+    this->AddObjective(std::move(obj), name, weight);
   }
   const ConstraintDef* ConstraintOrNull(const std::string& name) const;
   const ObjectiveDef* ObjectiveOrNull(const std::string& name) const;
@@ -58,17 +59,17 @@ class Model : public BaseObject {
   bool CheckFeasibility(const SolutionDef* solution, KArgsContainer* kargs = nullptr) const;
   const MultiObjective* multi_objective() const;
   MultiObjective* mutable_multi_objective();
-  // 最小化某个目标，若目标函数采用lambda表达式、仿函数、function等callable对象，通常结合 MakeFunctionObjective来调用
-  // 如：model->Minimize(MakeFunctionObjective(callable), "UDFObjName");
-  void Minimize(std::unique_ptr<ObjectiveDef> obj, std::string name) {
+  // 最小化某个目标，若目标函数采用lambda表达式、仿函数、function等callable对象，通常结合
+  // MakeFunctionObjective来调用 如：model->Minimize(MakeFunctionObjective(callable), "UDFObjName");
+  void Minimize(std::unique_ptr<ObjectiveDef> obj, std::string name, double weight = 1.0) {
     obj->set_direction(ObjectiveDef::Minimize);
-    AddObjective(std::move(obj), std::move(name));
+    AddObjective(std::move(obj), std::move(name), weight);
   }
-  // 最大化某个目标，若目标函数采用lambda表达式、仿函数、function等callable对象，通常结合 MakeFunctionObjective来调用
-  // 如：model->Maximize(MakeFunctionObjective(callable), "UDFObjName");
-  void Maximize(std::unique_ptr<ObjectiveDef> obj, std::string name) {
+  // 最大化某个目标，若目标函数采用lambda表达式、仿函数、function等callable对象，通常结合
+  // MakeFunctionObjective来调用 如：model->Maximize(MakeFunctionObjective(callable), "UDFObjName");
+  void Maximize(std::unique_ptr<ObjectiveDef> obj, std::string name, double weight = 1.0) {
     obj->set_direction(ObjectiveDef::Maximize);
-    AddObjective(std::move(obj), std::move(name));
+    AddObjective(std::move(obj), std::move(name), weight);
   }
 
   std::unique_ptr<Model> Clone() const;

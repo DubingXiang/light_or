@@ -18,7 +18,7 @@ namespace light_or {
 class SolutionDef;
 class ObjectiveDef {
  public:
-//  默认为最小化，最大化则通过将目标函数值乘以负1的形式实现
+  //  默认为最小化，最大化则通过将目标函数值乘以负1的形式实现
   enum Direction { Minimize = 1, Maximize = -1 };
 
  public:
@@ -43,11 +43,24 @@ class ObjectiveDef {
 };
 
 struct ObjectiveData {
-  ObjectiveData(std::string obj_name, double obj_value, ObjectiveDef::Direction obj_direction)
-      : name(std::move(obj_name)), value(obj_value), direction(obj_direction) {}
+  ObjectiveData(std::string obj_name,
+                double obj_value,
+                ObjectiveDef::Direction obj_direction,
+                double obj_weight)
+      : name(std::move(obj_name)), value(obj_value), direction(obj_direction), weight(obj_weight) {}
+  double direction_value() const {
+    return direction * value;
+  }
+  double weighted_value() const {
+    return weight * value;
+  }
+  double weighted_direction_value() const {
+    return direction * weight * value;
+  }
   std::string name                  = "UNKNOWN";
   double value                      = 0.0;
   ObjectiveDef::Direction direction = ObjectiveDef::Direction::Minimize;
+  double weight                     = 1.0;
 };
 class LinearSumObjective;
 // 多目标。存储多个目标，可转化为线性加权的单目标
@@ -58,14 +71,14 @@ class MultiObjective {
 
   std::vector<ObjectiveData> Compute(const SolutionDef* solution) const;
 
-  bool Add(std::unique_ptr<ObjectiveDef> obj, std::string name);
+  bool Add(std::unique_ptr<ObjectiveDef> obj, std::string name, double weight = 1.0);
   const ObjectiveDef* Objective(const std::string& name) const;
   double ObjectiveValue(const SolutionDef* solution, const std::string& name) const;
   int objective_count() const;
   std::vector<std::string> objective_names() const;
 
   std::unique_ptr<LinearSumObjective> ToLinearSumObjective(
-      const std::map<std::string, double>& weight_map) const;
+      const std::map<std::string, double>& weight_map = {}) const;
 
   std::unique_ptr<MultiObjective> Clone() const;
 
