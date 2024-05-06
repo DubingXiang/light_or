@@ -98,8 +98,8 @@ class Node {
   std::priority_queue<std::shared_ptr<Label>, std::vector<std::shared_ptr<Label>>, Label::PQCompare> feasible_labels_pq;
 
   
-  std::unordered_map<std::string, double> pi_name_2_vals;
-  const std::string cover_task_pi_name = "CoverTaskPi";
+  // std::unordered_map<std::string, double> pi_name_2_vals;
+  // const std::string cover_task_pi_name = "CoverTaskPi";
    
 
 };
@@ -146,7 +146,7 @@ class Net {
     std::unordered_map<int, std::unordered_map<int, std::shared_ptr<Arc>>> nid_2_nid_2_arcs;
     std::unordered_map<int, std::vector<std::shared_ptr<Arc>>> nid_2_out_arcs;  // 点出弧
     std::unordered_map<int, std::vector<std::shared_ptr<Arc>>> nid_2_in_arcs;   // 点入弧
-    std::unordered_map<std::string, std::vector<double>> pi_name_2_node_vals;
+    std::unordered_map<std::string, std::unordered_map<int, double>> pi_name_2_task_id_2_pi;
     const std::string cover_task_pi_name = "CoverTaskPi";
 };
 
